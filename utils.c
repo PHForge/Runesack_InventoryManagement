@@ -28,10 +28,10 @@ void display_banner(void) {
 
 // Placeholder for translations
 const char* get_message(int message_id, int language) {
-    static const char* messages[2][99] = {
+    static const char* messages[2][110] = {
         // English
         {
-            "=== Inventory Management System ===", // MSG_MENU_TITLE
+            "=== Inventory Management System ===", // MSG_MENU_TITLE - 1
             "Go on an adventure",              // MSG_ADVENTURE
             "Visit shop",                      // MSG_SHOP
             "Browse inventory",                // MSG_BROWSE
@@ -40,7 +40,7 @@ const char* get_message(int message_id, int language) {
             "Credits",                         // MSG_CREDITS
             "Quit",                            // MSG_QUIT
             "Invalid choice.",                 // MSG_INVALID_CHOICE
-            "Change language",                 // MSG_CHANGE_LANGUAGE
+            "Change language",                 // MSG_CHANGE_LANGUAGE - 10
             "Change max weight",               // MSG_CHANGE_MAX_WEIGHT
             "Current max weight",              // MSG_ACTUAL_MAX_WEIGHT
             "Add item to the game",            // MSG_ADD_ITEM
@@ -50,7 +50,7 @@ const char* get_message(int message_id, int language) {
             "Language updated",                // MSG_LANGUAGE_UPDATED
             "Max weight updated to",           // MSG_MAX_WEIGHT_UPDATED
             "Invalid weight.",                 // MSG_INVALID_WEIGHT
-            "Item created: ",                  // MSG_ITEM_CREATED
+            "Item created: ",                  // MSG_ITEM_CREATED - 20
             "Failed to create item.",          // MSG_FAILED_TO_CREATE_ITEM
             "Enter item name",                 // MSG_ENTER_ITEM_NAME
             "Select item type",                // MSG_SELECT_ITEM_TYPE
@@ -60,7 +60,7 @@ const char* get_message(int message_id, int language) {
             "Enter item weight",               // MSG_ENTER_ITEM_WEIGHT
             "Enter item value",                // MSG_ENTER_ITEM_VALUE
             "Enter passive effect",            // MSG_ENTER_PASSIVE_EFFECT
-            "Enter min damage",                // MSG_ENTER_MIN_DAMAGE
+            "Enter min damage",                // MSG_ENTER_MIN_DAMAGE - 30
             "Enter max damage",                // MSG_ENTER_MAX_DAMAGE
             "Enter damage type",               // MSG_ENTER_DAMAGE_TYPE
             "Enter durability",                // MSG_ENTER_DURABILITY
@@ -70,7 +70,7 @@ const char* get_message(int message_id, int language) {
             "Enter resistances",               // MSG_ENTER_RESISTANCES
             "Select slot",                     // MSG_SELECT_SLOT
             "Enter movement penalty",          // MSG_ENTER_MOVEMENT_PENALTY
-            "Enter effect",                    // MSG_ENTER_EFFECT
+            "Enter effect",                    // MSG_ENTER_EFFECT - 40
             "Enter duration",                  // MSG_ENTER_DURATION
             "Enter use time",                  // MSG_ENTER_USE_TIME
             "Enter charges",                   // MSG_ENTER_CHARGES
@@ -80,7 +80,7 @@ const char* get_message(int message_id, int language) {
             "Select language",                 // MSG_SELECT_LANGUAGE
             "Inventory is empty",              // MSG_INVENTORY_EMPTY
             "Weapon",                          // MSG_WEAPON
-            "Armor",                           // MSG_ARMOR
+            "Armor",                           // MSG_ARMOR - 50
             "Consumable",                      // MSG_CONSUMABLE
             "Quest Item",                      // MSG_QUEST_ITEM
             "Material",                        // MSG_MATERIAL
@@ -90,7 +90,7 @@ const char* get_message(int message_id, int language) {
             "Epic",                            // MSG_EPIC
             "Legendary",                       // MSG_LEGENDARY
             "Mythic",                          // MSG_MYTHIC
-            "Divine",                          // MSG_DIVINE
+            "Divine",                          // MSG_DIVINE - 60
             "New",                             // MSG_NEW
             "Worn",                            // MSG_WORN
             "Broken",                          // MSG_BROKEN
@@ -100,7 +100,7 @@ const char* get_message(int message_id, int language) {
             "Item name",                       // MSG_ITEM_NAME
             "Type",                            // MSG_ITEM_TYPE
             "Rarity",                          // MSG_ITEM_RARITY
-            "State",                           // MSG_ITEM_STATE
+            "State",                           // MSG_ITEM_STATE - 70
             "Description",                     // MSG_ITEM_DESCRIPTION
             "Weight",                          // MSG_ITEM_WEIGHT
             "Value",                           // MSG_ITEM_VALUE
@@ -110,7 +110,7 @@ const char* get_message(int message_id, int language) {
             "Damage type",                     // MSG_ITEM_DAMAGE_TYPE
             "Durability",                      // MSG_ITEM_DURABILITY
             "Range",                           // MSG_ITEM_RANGE
-            "Attack speed",                    // MSG_ITEM_ATTACK_SPEED
+            "Attack speed",                    // MSG_ITEM_ATTACK_SPEED - 80
             "Defense",                         // MSG_ITEM_DEFENSE
             "Resistances",                     // MSG_ITEM_RESISTANCES
             "Slot",                            // MSG_ITEM_SLOT
@@ -120,7 +120,7 @@ const char* get_message(int message_id, int language) {
             "Use time",                        // MSG_ITEM_USE_TIME
             "Charges",                         // MSG_ITEM_CHARGES
             "Quest ID",                        // MSG_ITEM_QUEST_ID
-            "Story",                           // MSG_ITEM_STORY
+            "Story",                           // MSG_ITEM_STORY - 90
             "Harvest location",                // MSG_ITEM_HARVEST_LOCATION
             "Head",                            // MSG_HEAD
             "Chest",                           // MSG_CHEST
@@ -129,7 +129,18 @@ const char* get_message(int message_id, int language) {
             "Off-hand",                        // MSG_OFFHAND
             "Inventory full! Item discarded.",  // MSG_INVENTORY_FULL
             "Total Weight",                    // MSG_ACTUAL_BAG_WEIGHT
-            "Wallet"                           // MSG_WALLET
+            "Wallet",                           // MSG_WALLET
+            "Inventory full! Item discarded.",  // MSG_INVENTORY_FULL - 100
+            "Total Weight",                    // MSG_ACTUAL_BAG_WEIGHT
+            "Wallet",                          // MSG_WALLET
+            "Enter item name (French)",        // MSG_ENTER_NAME_FR
+            "Enter item description (French)", // MSG_ENTER_DESCRIPTION_FR
+            "Enter passive effect (French)",   // MSG_ENTER_PASSIVE_EFFECT_FR
+            "Enter damage type (French)",      // MSG_ENTER_DAMAGE_TYPE_FR
+            "Enter resistances (French)",      // MSG_ENTER_RESISTANCES_FR
+            "Enter effect (French)",           // MSG_ENTER_EFFECT_FR
+            "Enter story (French)",            // MSG_ENTER_STORY_FR
+            "Enter harvest location (French)"  // MSG_ENTER_HARVEST_LOCATION_FR - 110
         },
         // French
         {
@@ -231,14 +242,25 @@ const char* get_message(int message_id, int language) {
             "Main secondaire",                        // MSG_OFFHAND
             "Inventaire plein ! Objet rejeté.",       // MSG_INVENTORY_FULL
             "Poids total",                            // MSG_ACTUAL_BAG_WEIGHT
-            "Portefeuille"                            // MSG_WALLET
+            "Portefeuille",                            // MSG_WALLET
+            "Inventaire plein ! Objet rejeté.", // MSG_INVENTORY_FULL
+            "Poids total",                     // MSG_ACTUAL_BAG_WEIGHT
+            "Portefeuille",                    // MSG_WALLET
+            "Entrez le nom de l'objet (Français)", // MSG_ENTER_NAME_FR
+            "Entrez la description de l'objet (Français)", // MSG_ENTER_DESCRIPTION_FR
+            "Entrez l'effet passif (Français)", // MSG_ENTER_PASSIVE_EFFECT_FR
+            "Entrez le type de dégâts (Français)", // MSG_ENTER_DAMAGE_TYPE_FR
+            "Entrez les résistances (Français)", // MSG_ENTER_RESISTANCES_FR
+            "Entrez l'effet (Français)",       // MSG_ENTER_EFFECT_FR
+            "Entrez l'histoire (Français)",    // MSG_ENTER_STORY_FR
+            "Entrez le lieu de récolte (Français)" // MSG_ENTER_HARVEST_LOCATION_FR
         }
     };
 
     if (language != GAME_LANG_ENGLISH && language != GAME_LANG_FRENCH) {
         return "Invalid language";
     }
-    if (message_id < 0 || message_id >= 99) {
+    if (message_id < 0 || message_id >= 110) {
         return "Invalid message ID";
     }
 
@@ -279,9 +301,9 @@ static int get_menu_choice(int prompt_id, const int options[], int num_options, 
 }
 
 // Fonction pour configurer les paramètres
-void configure_settings(GameSettings* settings, Inventory* inv) {
-    if (!settings || !inv) {
-        printf("Error: Invalid settings or inventory pointer.\n");
+void configure_settings(GameSettings* settings, Inventory* inv, ItemDatabase* db) {
+    if (!settings || !inv || !db) {
+        printf("Error: Invalid settings, inventory, or database pointer.\n");
         return;
     }
 
@@ -318,7 +340,7 @@ void configure_settings(GameSettings* settings, Inventory* inv) {
                 clear_input_buffer();
                 if (new_weight >= 0) {
                     settings->max_weight = new_weight;
-                    inv->max_weight = new_weight; // Synchronize with inventory
+                    inv->max_weight = new_weight;
                     printf("\n/!\\ %s %.2f Kg /!\\\n", get_message(MSG_MAX_WEIGHT_UPDATED, settings->language), new_weight);
                 } else {
                     printf("%s\n", get_message(MSG_INVALID_WEIGHT, settings->language));
@@ -326,10 +348,11 @@ void configure_settings(GameSettings* settings, Inventory* inv) {
                 break;
             }
             case 2: {
-                Item* new_item = create_item_from_menu(settings->language);
+                Item* new_item = create_item_from_menu(settings->language, db);
                 if (new_item) {
                     add_item(inv, new_item, settings->language);
-                    printf("\n/!\\ %s%s /!\\\n", get_message(MSG_ITEM_CREATED, settings->language), new_item->name);
+                    printf("\n/!\\ %s%s /!\\\n", get_message(MSG_ITEM_CREATED, settings->language),
+                           settings->language == GAME_LANG_ENGLISH ? new_item->name_en : new_item->name_fr);
                 } else {
                     printf("%s\n", get_message(MSG_FAILED_TO_CREATE_ITEM, settings->language));
                 }
@@ -345,8 +368,8 @@ void configure_settings(GameSettings* settings, Inventory* inv) {
 }
 
 // Fonction pour créer un objet via un menu interactif
-Item* create_item_from_menu(int language) {
-    char name[50], description[100], passive_effect[50];
+Item* create_item_from_menu(int language, ItemDatabase* db) {
+    char name_en[50], name_fr[50], description_en[100], description_fr[100], passive_effect_en[50], passive_effect_fr[50];
     float weight;
     int value;
     int type, rarity, state;
@@ -359,10 +382,17 @@ Item* create_item_from_menu(int language) {
     printf("\n=== %s ===\n", get_message(MSG_ADD_ITEM, language));
     printf("\n%s: ", get_message(MSG_ENTER_ITEM_NAME, language));
     while (1) {
-        fgets(name, sizeof(name), stdin);
-        name[strcspn(name, "\n")] = '\0';
-        if (strlen(name) > 0) break;
+        fgets(name_en, sizeof(name_en), stdin);
+        name_en[strcspn(name_en, "\n")] = '\0';
+        if (strlen(name_en) > 0) break;
         printf("%s: ", get_message(MSG_ENTER_ITEM_NAME, language));
+    }
+    printf("%s: ", get_message(MSG_ENTER_NAME_FR, language));
+    while (1) {
+        fgets(name_fr, sizeof(name_fr), stdin);
+        name_fr[strcspn(name_fr, "\n")] = '\0';
+        if (strlen(name_fr) > 0) break;
+        printf("%s: ", get_message(MSG_ENTER_NAME_FR, language));
     }
 
     type = get_menu_choice(MSG_SELECT_ITEM_TYPE, type_options, 5, language);
@@ -374,8 +404,11 @@ Item* create_item_from_menu(int language) {
     state = get_menu_choice(MSG_SELECT_ITEM_STATE, state_options, 4, language);
 
     printf("\n%s: ", get_message(MSG_ENTER_ITEM_DESCRIPTION, language));
-    fgets(description, sizeof(description), stdin);
-    description[strcspn(description, "\n")] = '\0';
+    fgets(description_en, sizeof(description_en), stdin);
+    description_en[strcspn(description_en, "\n")] = '\0';
+    printf("%s: ", get_message(MSG_ENTER_DESCRIPTION_FR, language));
+    fgets(description_fr, sizeof(description_fr), stdin);
+    description_fr[strcspn(description_fr, "\n")] = '\0';
 
     printf("%s: ", get_message(MSG_ENTER_ITEM_WEIGHT, language));
     scanf("%f", &weight);
@@ -386,21 +419,27 @@ Item* create_item_from_menu(int language) {
     clear_input_buffer();
 
     printf("%s: ", get_message(MSG_ENTER_PASSIVE_EFFECT, language));
-    fgets(passive_effect, sizeof(passive_effect), stdin);
-    passive_effect[strcspn(passive_effect, "\n")] = '\0';
+    fgets(passive_effect_en, sizeof(passive_effect_en), stdin);
+    passive_effect_en[strcspn(passive_effect_en, "\n")] = '\0';
+    printf("%s: ", get_message(MSG_ENTER_PASSIVE_EFFECT_FR, language));
+    fgets(passive_effect_fr, sizeof(passive_effect_fr), stdin);
+    passive_effect_fr[strcspn(passive_effect_fr, "\n")] = '\0';
 
     void* specific_data = NULL;
     switch (type) {
         case TYPE_WEAPON: {
-            Weapon weapon;
+            Weapon weapon = {0};
             printf("%s: ", get_message(MSG_ENTER_MIN_DAMAGE, language));
             scanf("%d", &weapon.min_damage);
             printf("%s: ", get_message(MSG_ENTER_MAX_DAMAGE, language));
             scanf("%d", &weapon.max_damage);
             printf("%s: ", get_message(MSG_ENTER_DAMAGE_TYPE, language));
             clear_input_buffer();
-            fgets(weapon.damage_type, sizeof(weapon.damage_type), stdin);
-            weapon.damage_type[strcspn(weapon.damage_type, "\n")] = '\0';
+            fgets(weapon.damage_type_en, sizeof(weapon.damage_type_en), stdin);
+            weapon.damage_type_en[strcspn(weapon.damage_type_en, "\n")] = '\0';
+            printf("%s: ", get_message(MSG_ENTER_DAMAGE_TYPE_FR, language));
+            fgets(weapon.damage_type_fr, sizeof(weapon.damage_type_fr), stdin);
+            weapon.damage_type_fr[strcspn(weapon.damage_type_fr, "\n")] = '\0';
             printf("%s: ", get_message(MSG_ENTER_DURABILITY, language));
             scanf("%d", &weapon.durability);
             printf("%s: ", get_message(MSG_ENTER_RANGE, language));
@@ -414,13 +453,16 @@ Item* create_item_from_menu(int language) {
             break;
         }
         case TYPE_ARMOR: {
-            Armor armor;
+            Armor armor = {0};
             printf("%s: ", get_message(MSG_ENTER_DEFENSE, language));
             scanf("%d", &armor.defense);
             printf("%s: ", get_message(MSG_ENTER_RESISTANCES, language));
             clear_input_buffer();
-            fgets(armor.resistances, sizeof(armor.resistances), stdin);
-            armor.resistances[strcspn(armor.resistances, "\n")] = '\0';
+            fgets(armor.resistances_en, sizeof(armor.resistances_en), stdin);
+            armor.resistances_en[strcspn(armor.resistances_en, "\n")] = '\0';
+            printf("%s: ", get_message(MSG_ENTER_RESISTANCES_FR, language));
+            fgets(armor.resistances_fr, sizeof(armor.resistances_fr), stdin);
+            armor.resistances_fr[strcspn(armor.resistances_fr, "\n")] = '\0';
             armor.slot = get_menu_choice(MSG_SELECT_SLOT, slot_options, 5, language);
             printf("%s: ", get_message(MSG_ENTER_MOVEMENT_PENALTY, language));
             scanf("%f", &armor.movement_penalty);
@@ -431,11 +473,14 @@ Item* create_item_from_menu(int language) {
             break;
         }
         case TYPE_CONSUMABLE: {
-            Consumable consumable;
+            Consumable consumable = {0};
             printf("%s: ", get_message(MSG_ENTER_EFFECT, language));
             clear_input_buffer();
-            fgets(consumable.effect, sizeof(consumable.effect), stdin);
-            consumable.effect[strcspn(consumable.effect, "\n")] = '\0';
+            fgets(consumable.effect_en, sizeof(consumable.effect_en), stdin);
+            consumable.effect_en[strcspn(consumable.effect_en, "\n")] = '\0';
+            printf("%s: ", get_message(MSG_ENTER_EFFECT_FR, language));
+            fgets(consumable.effect_fr, sizeof(consumable.effect_fr), stdin);
+            consumable.effect_fr[strcspn(consumable.effect_fr, "\n")] = '\0';
             printf("%s: ", get_message(MSG_ENTER_DURATION, language));
             scanf("%d", &consumable.duration);
             printf("%s: ", get_message(MSG_ENTER_USE_TIME, language));
@@ -449,25 +494,31 @@ Item* create_item_from_menu(int language) {
             break;
         }
         case TYPE_QUEST: {
-            QuestItem quest;
+            QuestItem quest = {0};
             printf("%s: ", get_message(MSG_ENTER_QUEST_ID, language));
             clear_input_buffer();
             fgets(quest.quest_id, sizeof(quest.quest_id), stdin);
             quest.quest_id[strcspn(quest.quest_id, "\n")] = '\0';
             printf("%s: ", get_message(MSG_ENTER_STORY, language));
-            fgets(quest.story, sizeof(quest.story), stdin);
-            quest.story[strcspn(quest.story, "\n")] = '\0';
+            fgets(quest.story_en, sizeof(quest.story_en), stdin);
+            quest.story_en[strcspn(quest.story_en, "\n")] = '\0';
+            printf("%s: ", get_message(MSG_ENTER_STORY_FR, language));
+            fgets(quest.story_fr, sizeof(quest.story_fr), stdin);
+            quest.story_fr[strcspn(quest.story_fr, "\n")] = '\0';
             specific_data = malloc(sizeof(QuestItem));
             if (!specific_data) return NULL;
             *(QuestItem*)specific_data = quest;
             break;
         }
         case TYPE_MATERIAL: {
-            Material material;
+            Material material = {0};
             printf("%s: ", get_message(MSG_ENTER_HARVEST_LOCATION, language));
             clear_input_buffer();
-            fgets(material.harvest_location, sizeof(material.harvest_location), stdin);
-            material.harvest_location[strcspn(material.harvest_location, "\n")] = '\0';
+            fgets(material.harvest_location_en, sizeof(material.harvest_location_en), stdin);
+            material.harvest_location_en[strcspn(material.harvest_location_en, "\n")] = '\0';
+            printf("%s: ", get_message(MSG_ENTER_HARVEST_LOCATION_FR, language));
+            fgets(material.harvest_location_fr, sizeof(material.harvest_location_fr), stdin);
+            material.harvest_location_fr[strcspn(material.harvest_location_fr, "\n")] = '\0';
             specific_data = malloc(sizeof(Material));
             if (!specific_data) return NULL;
             *(Material*)specific_data = material;
@@ -475,7 +526,11 @@ Item* create_item_from_menu(int language) {
         }
     }
 
-    Item* item = create_item(name, type, rarity, state, description, weight, value, passive_effect, specific_data);
+    Item* item = create_item(name_en, name_fr, type, rarity, state, description_en, description_fr,
+                             weight, value, passive_effect_en, passive_effect_fr, specific_data);
     if (specific_data) free(specific_data);
+    if (item && db) {
+        add_item_to_database(db, item);
+    }
     return item;
 }

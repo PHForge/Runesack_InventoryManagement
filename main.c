@@ -2,7 +2,7 @@
  * Runesack Inventory Management - A text-based RPG inventory system
  * Copyright (c) 2025 PHForge
  *
- * Manage an RPG inventory with adventures, shop interactions, and item sorting.
+ * Manage an RPG inventory with adventures, shop interactions, and item management.
  *
  * Licensed under the MIT License.
  */
@@ -18,6 +18,7 @@
 
 #include "utils.h"
 #include "inventory.h"
+#include "item.h"
 
 int main() {
     // Configure console locale and encoding
@@ -29,14 +30,19 @@ int main() {
 
     srand(time(NULL));
     GameSettings settings = {GAME_LANG_ENGLISH, 50.0f};
-    Inventory* inv = create_inventory(settings.max_weight); // Créer l'inventaire
-    if (!inv) {
-        printf("\nError: Failed to initialize inventory.\n");
+    ItemDatabase* db = load_items("items.txt", settings.language);
+    if (!db) {
+        printf("Failed to load items database.\n");
         return 1;
     }
+    Inventory* inv = create_inventory(settings.max_weight);
+    if (!inv) {
+        free_item_database(db);
+        printf("Error: Failed to initialize inventory.\n");
+        return 1;
+    }
+    load_inventory(inv, "inventory.txt", db, settings.language);
     display_banner();
-
-    Item* current_item = NULL; // Variable to store the created object
 
     int choice;
     do {
@@ -58,22 +64,31 @@ int main() {
 
         switch (choice) {
             case 1:
-                printf("\nLOL, adventure not implemented yet!\n");
+                printf("LOL, adventure not implemented yet!\n");
                 break;
             case 2:
-                printf("\nLOL, shop not implemented yet!\n");
-                break;
+            if (db->count > 0) {
+                int random_index = get_random_int(0, db->count - 1);
+                Item* random_item = db->items[random_index];
+                printf("\n=== %s ===\n", get_message(MSG_SHOP, settings.language));
+                print_item(random_item, settings.language);
+            } else {
+                printf("No items available in the shop.\n");
+            }
+            break;
             case 3:
                 display_inventory(inv, settings.language);
                 break;
             case 4:
-                configure_settings(&settings, inv);
+                configure_settings(&settings, inv, db);
                 break;
             case 5:
                 display_credits(settings.language);
                 getchar();
                 break;
             case 6:
+                save_inventory(inv, "inventory.txt");
+                save_items(db, "items.txt");
                 printf("%s\n", get_message(MSG_QUIT, settings.language));
                 break;
             default:
@@ -82,5 +97,6 @@ int main() {
     } while (choice != 6);
 
     free_inventory(inv);
+    free_item_database(db);
     return 0;
 }

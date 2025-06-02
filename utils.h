@@ -40,7 +40,10 @@ enum {
     MSG_ITEM_DURATION, MSG_ITEM_USE_TIME, MSG_ITEM_CHARGES,
     MSG_ITEM_QUEST_ID, MSG_ITEM_STORY, MSG_ITEM_HARVEST_LOCATION,
     MSG_HEAD, MSG_CHEST, MSG_LEGS, MSG_HANDS, MSG_OFFHAND,
-    MSG_INVENTORY_FULL, MSG_ACTUAL_BAG_WEIGHT, MSG_WALLET
+    MSG_INVENTORY_FULL, MSG_ACTUAL_BAG_WEIGHT, MSG_WALLET,
+    MSG_ENTER_NAME_FR, MSG_ENTER_DESCRIPTION_FR, MSG_ENTER_PASSIVE_EFFECT_FR,
+    MSG_ENTER_DAMAGE_TYPE_FR, MSG_ENTER_RESISTANCES_FR, MSG_ENTER_EFFECT_FR,
+    MSG_ENTER_STORY_FR, MSG_ENTER_HARVEST_LOCATION_FR
 };
 
 int get_random_int(int min, int max);
@@ -48,7 +51,7 @@ void clear_input_buffer(void);
 void display_banner(void);
 const char* get_message(int message_id, int language);
 void display_credits(int language);
-void configure_settings(GameSettings* settings, Inventory* inv);
-Item* create_item_from_menu(int language);
+void configure_settings(GameSettings* settings, Inventory* inv, ItemDatabase* db);
+Item* create_item_from_menu(int language, ItemDatabase* db);
 
 #endif

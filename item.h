@@ -35,7 +35,8 @@ typedef struct {
 typedef struct {
     int min_damage;
     int max_damage;
-    char damage_type[20];
+    char damage_type_en[20];
+    char damage_type_fr[20];
     int durability;
     float range;
     float attack_speed;
@@ -43,13 +44,15 @@ typedef struct {
 
 typedef struct {
     int defense;
-    char resistances[50];
+    char resistances_en[50];
+    char resistances_fr[50];
     int slot; // 0: Head, 1: Chest, 2: Legs, 3: Hands, 4: Offhand
     float movement_penalty;
 } Armor;
 
 typedef struct {
-    char effect[50];
+    char effect_en[50];
+    char effect_fr[50];
     int duration; // indicates how long the effect of the consumable is active after use
     float use_time; // indicates the time required to activate or consume the item
     int charges;
@@ -57,11 +60,13 @@ typedef struct {
 
 typedef struct {
     char quest_id[50];
-    char story[100];
+    char story_en[100];
+    char story_fr[100];
 } QuestItem;
 
 typedef struct {
-    char harvest_location[50];
+    char harvest_location_en[50];
+    char harvest_location_fr[50];
 } Material;
 
 typedef union {
@@ -73,18 +78,36 @@ typedef union {
 } ItemSpecific;
 
 typedef struct {
-    char name[50];
+    char name_en[50];
+    char name_fr[50];
     ItemProperties properties;
-    char description[100];
+    char description_en[100];
+    char description_fr[100];
     float weight;
     int value;
-    char passive_effect[50];
+    char passive_effect_en[50];
+    char passive_effect_fr[50];
     ItemSpecific specific;
 } Item;
 
-Item* create_item(const char* name, int type, int rarity, int state, const char* description, 
-                  float weight, int value, const char* passive_effect, void* specific_data);
+Item* create_item(const char* name_en, const char* name_fr, int type, int rarity, int state,
+                  const char* description_en, const char* description_fr, float weight, int value,
+                  const char* passive_effect_en, const char* passive_effect_fr, void* specific_data);
 void free_item(Item* item);
 void print_item(const Item* item, int language);
+
+// Nouvelle structure pour la base de données
+typedef struct {
+    Item** items;
+    int count;
+    int capacity;
+} ItemDatabase;
+
+ItemDatabase* load_items(const char* filename, int language);
+void save_items(ItemDatabase* db, const char* filename);
+void free_item_database(ItemDatabase* db);
+ItemDatabase* create_item_database(int capacity);
+void add_item_to_database(ItemDatabase* db, Item* item);
+
 
 #endif

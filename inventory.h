@@ -18,5 +18,7 @@ Inventory* create_inventory(float max_weight);
 void add_item(Inventory* inv, Item* item, int language);
 void display_inventory(const Inventory* inv, int language);
 void free_inventory(Inventory* inv);
+void load_inventory(Inventory* inv, const char* filename, ItemDatabase* db, int language);
+void save_inventory(Inventory* inv, const char* filename);
 
 #endif

@@ -6,59 +6,59 @@
 
 // Creates a new item
 Item* create_item(
-    const char* name, 
-    int type, 
-    int rarity, 
-    int state, 
-    const char* description, 
-    float weight, 
-    int value, 
-    const char* passive_effect, 
-    void* specific_data
+    const char* name_en, const char* name_fr, int type, int rarity, int state,
+    const char* description_en, const char* description_fr, float weight, int value,
+    const char* passive_effect_en, const char* passive_effect_fr, void* specific_data
 ) {
     // Parameter validation
-    if (!name || !description || !passive_effect || !specific_data ||
+    if (!name_en || !name_fr || !description_en || !description_fr ||
+        !passive_effect_en || !passive_effect_fr || !specific_data ||
         type < TYPE_WEAPON || type > TYPE_MATERIAL ||
         rarity < RARITY_WORTHLESS || rarity > RARITY_DIVINE ||
         state < STATE_NEW || state > STATE_CURSED ||
         weight < 0 || value < 0) {
-        return NULL; // Fail if invalid parameters
+        return NULL;
     }
 
-    // Memory allocation for the object
     Item* new_item = (Item*)malloc(sizeof(Item));
     if (!new_item) {
-        return NULL; // Fail if allocation fails
+        return NULL;
     }
 
-    // Initialization of generic fields
-    strncpy(new_item->name, name, sizeof(new_item->name) - 1);
-    new_item->name[sizeof(new_item->name) - 1] = '\0';
+    // Initialize generic fields
+    strncpy(new_item->name_en, name_en, sizeof(new_item->name_en) - 1);
+    new_item->name_en[sizeof(new_item->name_en) - 1] = '\0';
+    strncpy(new_item->name_fr, name_fr, sizeof(new_item->name_fr) - 1);
+    new_item->name_fr[sizeof(new_item->name_fr) - 1] = '\0';
     new_item->properties.type = type;
     new_item->properties.rarity = rarity;
     new_item->properties.state = state;
-    strncpy(new_item->description, description, sizeof(new_item->description) - 1);
-    new_item->description[sizeof(new_item->description) - 1] = '\0';
+    strncpy(new_item->description_en, description_en, sizeof(new_item->description_en) - 1);
+    new_item->description_en[sizeof(new_item->description_en) - 1] = '\0';
+    strncpy(new_item->description_fr, description_fr, sizeof(new_item->description_fr) - 1);
+    new_item->description_fr[sizeof(new_item->description_fr) - 1] = '\0';
     new_item->weight = weight;
     new_item->value = value;
-    strncpy(new_item->passive_effect, passive_effect, sizeof(new_item->passive_effect) - 1);
-    new_item->passive_effect[sizeof(new_item->passive_effect) - 1] = '\0';
+    strncpy(new_item->passive_effect_en, passive_effect_en, sizeof(new_item->passive_effect_en) - 1);
+    new_item->passive_effect_en[sizeof(new_item->passive_effect_en) - 1] = '\0';
+    strncpy(new_item->passive_effect_fr, passive_effect_fr, sizeof(new_item->passive_effect_fr) - 1);
+    new_item->passive_effect_fr[sizeof(new_item->passive_effect_fr) - 1] = '\0';
 
-    // Initialization of specific fields according to type
+    // Initialize specific fields
     switch (type) {
         case TYPE_WEAPON: {
             Weapon* weapon = (Weapon*)specific_data;
             if (weapon->min_damage < 0 || weapon->max_damage < weapon->min_damage ||
                 weapon->durability < 0 || weapon->range < 0 || weapon->attack_speed < 0) {
                 free(new_item);
-                return NULL; 
+                return NULL;
             }
             new_item->specific.weapon = *weapon;
             break;
         }
         case TYPE_ARMOR: {
             Armor* armor = (Armor*)specific_data;
-            if (armor->defense < 0 || armor->movement_penalty < 0 || 
+            if (armor->defense < 0 || armor->movement_penalty < 0 ||
                 armor->slot < SLOT_HEAD || armor->slot > SLOT_OFFHAND) {
                 free(new_item);
                 return NULL;
@@ -87,7 +87,7 @@ Item* create_item(
         }
         default:
             free(new_item);
-            return NULL; // Invalid type
+            return NULL;
     }
 
     return new_item;
@@ -106,8 +106,8 @@ void print_item(const Item* item, int language) {
         return;
     }
 
-    // Afficher les champs génériques
-    printf("%s: %s\n", get_message(MSG_ITEM_NAME, language), item->name);
+    printf("%s: %s\n", get_message(MSG_ITEM_NAME, language),
+           language == GAME_LANG_ENGLISH ? item->name_en : item->name_fr);
     printf("%s: ", get_message(MSG_ITEM_TYPE, language));
     switch (item->properties.type) {
         case TYPE_WEAPON: printf("%s\n", get_message(MSG_WEAPON, language)); break;
@@ -133,24 +133,27 @@ void print_item(const Item* item, int language) {
         case STATE_BROKEN: printf("%s\n", get_message(MSG_BROKEN, language)); break;
         case STATE_CURSED: printf("%s\n", get_message(MSG_CURSED, language)); break;
     }
-    printf("%s: %s\n", get_message(MSG_ITEM_DESCRIPTION, language), item->description);
+    printf("%s: %s\n", get_message(MSG_ITEM_DESCRIPTION, language),
+           language == GAME_LANG_ENGLISH ? item->description_en : item->description_fr);
     printf("%s: %.2f Kg\n", get_message(MSG_ITEM_WEIGHT, language), item->weight);
     printf("%s: %d PHGold\n", get_message(MSG_ITEM_VALUE, language), item->value);
-    printf("%s: %s\n", get_message(MSG_ITEM_PASSIVE_EFFECT, language), item->passive_effect);
+    printf("%s: %s\n", get_message(MSG_ITEM_PASSIVE_EFFECT, language),
+           language == GAME_LANG_ENGLISH ? item->passive_effect_en : item->passive_effect_fr);
 
-    // Afficher les champs spécifiques
     switch (item->properties.type) {
         case TYPE_WEAPON:
             printf("%s: %d\n", get_message(MSG_ITEM_MIN_DAMAGE, language), item->specific.weapon.min_damage);
             printf("%s: %d\n", get_message(MSG_ITEM_MAX_DAMAGE, language), item->specific.weapon.max_damage);
-            printf("%s: %s\n", get_message(MSG_ITEM_DAMAGE_TYPE, language), item->specific.weapon.damage_type);
+            printf("%s: %s\n", get_message(MSG_ITEM_DAMAGE_TYPE, language),
+                   language == GAME_LANG_ENGLISH ? item->specific.weapon.damage_type_en : item->specific.weapon.damage_type_fr);
             printf("%s: %d%%\n", get_message(MSG_ITEM_DURABILITY, language), item->specific.weapon.durability);
             printf("%s: %.2f m\n", get_message(MSG_ITEM_RANGE, language), item->specific.weapon.range);
             printf("%s: %.2f\n", get_message(MSG_ITEM_ATTACK_SPEED, language), item->specific.weapon.attack_speed);
             break;
         case TYPE_ARMOR:
             printf("%s: %d\n", get_message(MSG_ITEM_DEFENSE, language), item->specific.armor.defense);
-            printf("%s: %s\n", get_message(MSG_ITEM_RESISTANCES, language), item->specific.armor.resistances);
+            printf("%s: %s\n", get_message(MSG_ITEM_RESISTANCES, language),
+                   language == GAME_LANG_ENGLISH ? item->specific.armor.resistances_en : item->specific.armor.resistances_fr);
             printf("%s: ", get_message(MSG_ITEM_SLOT, language));
             switch (item->specific.armor.slot) {
                 case SLOT_HEAD: printf("%s\n", get_message(MSG_HEAD, language)); break;
@@ -162,17 +165,20 @@ void print_item(const Item* item, int language) {
             printf("%s: %.2f\n", get_message(MSG_ITEM_MOVEMENT_PENALTY, language), item->specific.armor.movement_penalty);
             break;
         case TYPE_CONSUMABLE:
-            printf("%s: %s\n", get_message(MSG_ITEM_EFFECT, language), item->specific.consumable.effect);
+            printf("%s: %s\n", get_message(MSG_ITEM_EFFECT, language),
+                   language == GAME_LANG_ENGLISH ? item->specific.consumable.effect_en : item->specific.consumable.effect_fr);
             printf("%s: %d\n", get_message(MSG_ITEM_DURATION, language), item->specific.consumable.duration);
             printf("%s: %.2f\n", get_message(MSG_ITEM_USE_TIME, language), item->specific.consumable.use_time);
             printf("%s: %d\n", get_message(MSG_ITEM_CHARGES, language), item->specific.consumable.charges);
             break;
         case TYPE_QUEST:
             printf("%s: %s\n", get_message(MSG_ITEM_QUEST_ID, language), item->specific.quest.quest_id);
-            printf("%s: %s\n", get_message(MSG_ITEM_STORY, language), item->specific.quest.story);
+            printf("%s: %s\n", get_message(MSG_ITEM_STORY, language),
+                   language == GAME_LANG_ENGLISH ? item->specific.quest.story_en : item->specific.quest.story_fr);
             break;
         case TYPE_MATERIAL:
-            printf("%s: %s\n", get_message(MSG_ITEM_HARVEST_LOCATION, language), item->specific.material.harvest_location);
+            printf("%s: %s\n", get_message(MSG_ITEM_HARVEST_LOCATION, language),
+                   language == GAME_LANG_ENGLISH ? item->specific.material.harvest_location_en : item->specific.material.harvest_location_fr);
             break;
     }
 }
