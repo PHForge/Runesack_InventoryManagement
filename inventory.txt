@@ -1,0 +1,7 @@
+phgold: 100
+total_weight: 5.5
+max_weight: 50.0
+ITEM
+name_en: Rusty Dagger
+ITEM
+name_en: Light sword for beginners.

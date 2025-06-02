@@ -1,0 +1,15 @@
+# Compiled files
+bin/
+obj/
+
+# Code::Blocks Project Files
+*.cbp
+*.depend
+*.layout
+
+# Visual Studio Code settings
+.vscode/
+
+# Temporary files
+*.o
+*.exe
