@@ -35,6 +35,7 @@ void add_item_to_database(ItemDatabase* db, Item* item) {
 }
 
 // Loads items from a file
+// Loads items from a file
 ItemDatabase* load_items(const char* filename, int language) {
     FILE* file = fopen(filename, "r");
     if (!file) {
@@ -56,13 +57,22 @@ ItemDatabase* load_items(const char* filename, int language) {
     int type = -1, rarity = -1, state = -1, value = 0;
     float weight = 0.0f;
 
+    // Structures pour les types spécifiques
+    Weapon weapon = {0};
+    Armor armor = {0};
+    Consumable consumable = {0};
+    QuestItem quest = {0};
+    Material material = {0};
+
     while (fgets(line, sizeof(line), file)) {
-        line[strcspn(line, "\n")] = '\0';
+        line[strcspn(line, "\n")] = '\0'; // Supprimer le '\n' final
         if (strcmp(line, "ITEM") == 0) {
+            // Si un item est en cours de construction, l'ajouter à la base
             if (item) {
                 add_item_to_database(db, item);
+                item = NULL;
             }
-            item = NULL;
+            // Réinitialiser toutes les variables pour le prochain item
             type = -1;
             rarity = -1;
             state = -1;
@@ -74,14 +84,22 @@ ItemDatabase* load_items(const char* filename, int language) {
             passive_effect_fr[0] = '\0';
             value = 0;
             weight = 0.0f;
+            // Réinitialiser les structures spécifiques
+            memset(&weapon, 0, sizeof(Weapon));
+            memset(&armor, 0, sizeof(Armor));
+            memset(&consumable, 0, sizeof(Consumable));
+            memset(&quest, 0, sizeof(QuestItem));
+            memset(&material, 0, sizeof(Material));
             continue;
         }
 
+        // Parser la ligne en clé et valeur
         char* key = strtok(line, ":");
         char* value_str = strtok(NULL, "");
         if (!key || !value_str) continue;
-        while (*value_str == ' ') value_str++;
+        while (*value_str == ' ') value_str++; // Supprimer les espaces en début de valeur
 
+        // Propriétés communes à tous les items
         if (strcmp(key, "type") == 0) {
             type = atoi(value_str);
             if (type < TYPE_WEAPON || type > TYPE_MATERIAL) type = -1;
@@ -113,8 +131,9 @@ ItemDatabase* load_items(const char* filename, int language) {
         } else if (strcmp(key, "passive_effect_fr") == 0) {
             strncpy(passive_effect_fr, value_str, sizeof(passive_effect_fr) - 1);
             passive_effect_fr[sizeof(passive_effect_fr) - 1] = '\0';
-        } else if (type == TYPE_WEAPON) {
-            Weapon weapon = {0};
+        }
+        // Propriétés spécifiques pour TYPE_WEAPON
+        else if (type == TYPE_WEAPON) {
             if (strcmp(key, "min_damage") == 0) {
                 weapon.min_damage = atoi(value_str);
             } else if (strcmp(key, "max_damage") == 0) {
@@ -131,14 +150,10 @@ ItemDatabase* load_items(const char* filename, int language) {
                 weapon.range = atof(value_str);
             } else if (strcmp(key, "attack_speed") == 0) {
                 weapon.attack_speed = atof(value_str);
-                if (type >= 0 && rarity >= 0 && state >= 0 && name_en[0] && name_fr[0]) {
-                    item = create_item(name_en, name_fr, type, rarity, state,
-                                       description_en, description_fr, weight, value,
-                                       passive_effect_en, passive_effect_fr, &weapon);
-                }
             }
-        } else if (type == TYPE_ARMOR) {
-            Armor armor = {0};
+        }
+        // Propriétés spécifiques pour TYPE_ARMOR
+        else if (type == TYPE_ARMOR) {
             if (strcmp(key, "defense") == 0) {
                 armor.defense = atoi(value_str);
             } else if (strcmp(key, "resistances_en") == 0) {
@@ -152,14 +167,10 @@ ItemDatabase* load_items(const char* filename, int language) {
                 if (armor.slot < SLOT_HEAD || armor.slot > SLOT_OFFHAND) armor.slot = SLOT_HEAD;
             } else if (strcmp(key, "movement_penalty") == 0) {
                 armor.movement_penalty = atof(value_str);
-                if (type >= 0 && rarity >= 0 && state >= 0 && name_en[0] && name_fr[0]) {
-                    item = create_item(name_en, name_fr, type, rarity, state,
-                                       description_en, description_fr, weight, value,
-                                       passive_effect_en, passive_effect_fr, &armor);
-                }
             }
-        } else if (type == TYPE_CONSUMABLE) {
-            Consumable consumable = {0};
+        }
+        // Propriétés spécifiques pour TYPE_CONSUMABLE
+        else if (type == TYPE_CONSUMABLE) {
             if (strcmp(key, "effect_en") == 0) {
                 strncpy(consumable.effect_en, value_str, sizeof(consumable.effect_en) - 1);
                 consumable.effect_en[sizeof(consumable.effect_en) - 1] = '\0';
@@ -172,14 +183,10 @@ ItemDatabase* load_items(const char* filename, int language) {
                 consumable.use_time = atof(value_str);
             } else if (strcmp(key, "charges") == 0) {
                 consumable.charges = atoi(value_str);
-                if (type >= 0 && rarity >= 0 && state >= 0 && name_en[0] && name_fr[0]) {
-                    item = create_item(name_en, name_fr, type, rarity, state,
-                                       description_en, description_fr, weight, value,
-                                       passive_effect_en, passive_effect_fr, &consumable);
-                }
             }
-        } else if (type == TYPE_QUEST) {
-            QuestItem quest = {0};
+        }
+        // Propriétés spécifiques pour TYPE_QUEST
+        else if (type == TYPE_QUEST) {
             if (strcmp(key, "quest_id") == 0) {
                 strncpy(quest.quest_id, value_str, sizeof(quest.quest_id) - 1);
                 quest.quest_id[sizeof(quest.quest_id) - 1] = '\0';
@@ -189,29 +196,57 @@ ItemDatabase* load_items(const char* filename, int language) {
             } else if (strcmp(key, "story_fr") == 0) {
                 strncpy(quest.story_fr, value_str, sizeof(quest.story_fr) - 1);
                 quest.story_fr[sizeof(quest.story_fr) - 1] = '\0';
-                if (type >= 0 && rarity >= 0 && state >= 0 && name_en[0] && name_fr[0]) {
-                    item = create_item(name_en, name_fr, type, rarity, state,
-                                       description_en, description_fr, weight, value,
-                                       passive_effect_en, passive_effect_fr, &quest);
-                }
             }
-        } else if (type == TYPE_MATERIAL) {
-            Material material = {0};
+        }
+        // Propriétés spécifiques pour TYPE_MATERIAL
+        else if (type == TYPE_MATERIAL) {
             if (strcmp(key, "harvest_location_en") == 0) {
                 strncpy(material.harvest_location_en, value_str, sizeof(material.harvest_location_en) - 1);
                 material.harvest_location_en[sizeof(material.harvest_location_en) - 1] = '\0';
             } else if (strcmp(key, "harvest_location_fr") == 0) {
                 strncpy(material.harvest_location_fr, value_str, sizeof(material.harvest_location_fr) - 1);
                 material.harvest_location_fr[sizeof(material.harvest_location_fr) - 1] = '\0';
-                if (type >= 0 && rarity >= 0 && state >= 0 && name_en[0] && name_fr[0]) {
-                    item = create_item(name_en, name_fr, type, rarity, state,
-                                       description_en, description_fr, weight, value,
-                                       passive_effect_en, passive_effect_fr, &material);
-                }
+            }
+        }
+
+        // Vérification et création de l'item selon le type
+        if (name_en[0] && name_fr[0] && type >= 0 && rarity >= 0 && state >= 0) {
+            if (type == TYPE_WEAPON &&
+                weapon.min_damage >= 0 && weapon.max_damage >= 0 &&
+                weapon.damage_type_en[0] && weapon.damage_type_fr[0] &&
+                weapon.durability >= 0 && weapon.range >= 0 && weapon.attack_speed >= 0) {
+                item = create_item(name_en, name_fr, type, rarity, state,
+                                   description_en, description_fr, weight, value,
+                                   passive_effect_en, passive_effect_fr, &weapon);
+            } else if (type == TYPE_ARMOR &&
+                       armor.defense >= 0 && armor.resistances_en[0] &&
+                       armor.resistances_fr[0] && armor.slot >= SLOT_HEAD &&
+                       armor.slot <= SLOT_OFFHAND) {
+                item = create_item(name_en, name_fr, type, rarity, state,
+                                   description_en, description_fr, weight, value,
+                                   passive_effect_en, passive_effect_fr, &armor);
+            } else if (type == TYPE_CONSUMABLE &&
+                       consumable.effect_en[0] && consumable.effect_fr[0] &&
+                       consumable.duration >= 0 && consumable.use_time >= 0 &&
+                       consumable.charges >= 0) {
+                item = create_item(name_en, name_fr, type, rarity, state,
+                                   description_en, description_fr, weight, value,
+                                   passive_effect_en, passive_effect_fr, &consumable);
+            } else if (type == TYPE_QUEST &&
+                       quest.quest_id[0] && quest.story_en[0] && quest.story_fr[0]) {
+                item = create_item(name_en, name_fr, type, rarity, state,
+                                   description_en, description_fr, weight, value,
+                                   passive_effect_en, passive_effect_fr, &quest);
+            } else if (type == TYPE_MATERIAL &&
+                       material.harvest_location_en[0] && material.harvest_location_fr[0]) {
+                item = create_item(name_en, name_fr, type, rarity, state,
+                                   description_en, description_fr, weight, value,
+                                   passive_effect_en, passive_effect_fr, &material);
             }
         }
     }
 
+    // Ajouter le dernier item s'il existe
     if (item) {
         add_item_to_database(db, item);
     }
@@ -312,8 +347,6 @@ void load_inventory(Inventory* inv, const char* filename, ItemDatabase* db, int 
 
         if (strcmp(key, "phgold") == 0) {
             inv->phgold = atoi(value);
-        } else if (strcmp(key, "total_weight") == 0) {
-            inv->total_weight = atof(value);
         } else if (strcmp(key, "max_weight") == 0) {
             inv->max_weight = atof(value);
         } else if (strcmp(key, "ITEM") == 0) {
@@ -350,7 +383,6 @@ void save_inventory(Inventory* inv, const char* filename) {
     if (!file) return;
 
     fprintf(file, "phgold: %d\n", inv->phgold);
-    fprintf(file, "total_weight: %.2f\n", inv->total_weight);
     fprintf(file, "max_weight: %.2f\n", inv->max_weight);
 
     InventoryNode* current = inv->head;
