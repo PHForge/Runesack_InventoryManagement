@@ -108,6 +108,7 @@ void save_items(ItemDatabase* db, const char* filename);
 void free_item_database(ItemDatabase* db);
 ItemDatabase* create_item_database(int capacity);
 void add_item_to_database(ItemDatabase* db, Item* item);
+void save_single_item(Item* item, const char* filename);
 
 
 #endif

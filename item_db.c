@@ -35,7 +35,6 @@ void add_item_to_database(ItemDatabase* db, Item* item) {
 }
 
 // Loads items from a file
-// Loads items from a file
 ItemDatabase* load_items(const char* filename, int language) {
     FILE* file = fopen(filename, "r");
     if (!file) {
@@ -255,6 +254,64 @@ ItemDatabase* load_items(const char* filename, int language) {
     return db;
 }
 
+// Saves a single item to the file in append mode
+void save_single_item(Item* item, const char* filename) {
+    if (!item) return;
+
+    FILE* file = fopen(filename, "a"); // Append mode
+    if (!file) return;
+
+    fprintf(file, "ITEM\n");
+    fprintf(file, "type: %d\n", item->properties.type);
+    fprintf(file, "name_en: %s\n", item->name_en);
+    fprintf(file, "name_fr: %s\n", item->name_fr);
+    fprintf(file, "rarity: %d\n", item->properties.rarity);
+    fprintf(file, "state: %d\n", item->properties.state);
+    fprintf(file, "description_en: %s\n", item->description_en);
+    fprintf(file, "description_fr: %s\n", item->description_fr);
+    fprintf(file, "weight: %.2f\n", item->weight);
+    fprintf(file, "value: %d\n", item->value);
+    fprintf(file, "passive_effect_en: %s\n", item->passive_effect_en);
+    fprintf(file, "passive_effect_fr: %s\n", item->passive_effect_fr);
+
+    switch (item->properties.type) {
+        case TYPE_WEAPON:
+            fprintf(file, "min_damage: %d\n", item->specific.weapon.min_damage);
+            fprintf(file, "max_damage: %d\n", item->specific.weapon.max_damage);
+            fprintf(file, "damage_type_en: %s\n", item->specific.weapon.damage_type_en);
+            fprintf(file, "damage_type_fr: %s\n", item->specific.weapon.damage_type_fr);
+            fprintf(file, "durability: %d\n", item->specific.weapon.durability);
+            fprintf(file, "range: %.2f\n", item->specific.weapon.range);
+            fprintf(file, "attack_speed: %.2f\n", item->specific.weapon.attack_speed);
+            break;
+        case TYPE_ARMOR:
+            fprintf(file, "defense: %d\n", item->specific.armor.defense);
+            fprintf(file, "resistances_en: %s\n", item->specific.armor.resistances_en);
+            fprintf(file, "resistances_fr: %s\n", item->specific.armor.resistances_fr);
+            fprintf(file, "slot: %d\n", item->specific.armor.slot);
+            fprintf(file, "movement_penalty: %.2f\n", item->specific.armor.movement_penalty);
+            break;
+        case TYPE_CONSUMABLE:
+            fprintf(file, "effect_en: %s\n", item->specific.consumable.effect_en);
+            fprintf(file, "effect_fr: %s\n", item->specific.consumable.effect_fr);
+            fprintf(file, "duration: %d\n", item->specific.consumable.duration);
+            fprintf(file, "use_time: %.2f\n", item->specific.consumable.use_time);
+            fprintf(file, "charges: %d\n", item->specific.consumable.charges);
+            break;
+        case TYPE_QUEST:
+            fprintf(file, "quest_id: %s\n", item->specific.quest.quest_id);
+            fprintf(file, "story_en: %s\n", item->specific.quest.story_en);
+            fprintf(file, "story_fr: %s\n", item->specific.quest.story_fr);
+            break;
+        case TYPE_MATERIAL:
+            fprintf(file, "harvest_location_en: %s\n", item->specific.material.harvest_location_en);
+            fprintf(file, "harvest_location_fr: %s\n", item->specific.material.harvest_location_fr);
+            break;
+    }
+
+    fclose(file);
+}
+/*
 // Saves items to a file
 void save_items(ItemDatabase* db, const char* filename) {
     if (!db) return;
@@ -315,6 +372,7 @@ void save_items(ItemDatabase* db, const char* filename) {
 
     fclose(file);
 }
+*/
 
 // Frees the item database
 void free_item_database(ItemDatabase* db) {

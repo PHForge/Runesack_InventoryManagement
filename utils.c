@@ -531,6 +531,7 @@ Item* create_item_from_menu(int language, ItemDatabase* db) {
     if (specific_data) free(specific_data);
     if (item && db) {
         add_item_to_database(db, item);
+        save_single_item(item, "items.txt"); // Sauvegarder l'item dans items.txt
     }
     return item;
 }

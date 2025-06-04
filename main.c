@@ -82,7 +82,7 @@ int main() {
                 break;
             case 6:
                 save_inventory(inv, "inventory.txt");
-                save_items(db, "items.txt");
+                //save_items(db, "items.txt");
                 printf("%s\n", get_message(MSG_QUIT, settings.language));
                 break;
             default:
