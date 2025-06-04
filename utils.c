@@ -28,7 +28,7 @@ void display_banner(void) {
 
 // Placeholder for translations
 const char* get_message(int message_id, int language) {
-    static const char* messages[2][111] = {
+    static const char* messages[2][110] = {
         // English
         {
             "=== Inventory Management System ===", // MSG_MENU_TITLE - 1
@@ -129,19 +129,18 @@ const char* get_message(int message_id, int language) {
             "Off-hand",                        // MSG_OFFHAND
             "Inventory full! Item discarded.",  // MSG_INVENTORY_FULL
             "Total Weight",                    // MSG_ACTUAL_BAG_WEIGHT
-            "Wallet",                           // MSG_WALLET
-            "Inventory full! Item discarded.",  // MSG_INVENTORY_FULL - 100
-            "Total Weight",                    // MSG_ACTUAL_BAG_WEIGHT
             "Wallet",                          // MSG_WALLET
-            "Enter item name (French)",        // MSG_ENTER_NAME_FR
+            "Enter item name (French)",        // MSG_ENTER_NAME_FR - 100
             "Enter item description (French)", // MSG_ENTER_DESCRIPTION_FR
             "Enter passive effect (French)",   // MSG_ENTER_PASSIVE_EFFECT_FR
             "Enter damage type (French)",      // MSG_ENTER_DAMAGE_TYPE_FR
             "Enter resistances (French)",      // MSG_ENTER_RESISTANCES_FR
             "Enter effect (French)",           // MSG_ENTER_EFFECT_FR
             "Enter story (French)",            // MSG_ENTER_STORY_FR
-            "Enter harvest location (French)",  // MSG_ENTER_HARVEST_LOCATION_FR - 110
-            "Not enough PHGold!"              // MSG_NOT_ENOUGH_GOLD
+            "Enter harvest location (French)",  // MSG_ENTER_HARVEST_LOCATION_FR
+            "Not enough PHGold!",              // MSG_NOT_ENOUGH_GOLD
+            "Sell items",                       // MSG_SELL_ITEMS
+            "Item sold"                        // MSG_ITEM_SOLD - 110
         },
         // French
         {
@@ -244,9 +243,6 @@ const char* get_message(int message_id, int language) {
             "Inventaire plein ! Objet rejeté.",       // MSG_INVENTORY_FULL
             "Poids total",                            // MSG_ACTUAL_BAG_WEIGHT
             "Portefeuille",                            // MSG_WALLET
-            "Inventaire plein ! Objet rejeté.", // MSG_INVENTORY_FULL
-            "Poids total",                     // MSG_ACTUAL_BAG_WEIGHT
-            "Portefeuille",                    // MSG_WALLET
             "Entrez le nom de l'objet (Français)", // MSG_ENTER_NAME_FR
             "Entrez la description de l'objet (Français)", // MSG_ENTER_DESCRIPTION_FR
             "Entrez l'effet passif (Français)", // MSG_ENTER_PASSIVE_EFFECT_FR
@@ -255,14 +251,16 @@ const char* get_message(int message_id, int language) {
             "Entrez l'effet (Français)",       // MSG_ENTER_EFFECT_FR
             "Entrez l'histoire (Français)",    // MSG_ENTER_STORY_FR
             "Entrez le lieu de récolte (Français)", // MSG_ENTER_HARVEST_LOCATION_FR
-            "Pas assez de PHGold !"                // MSG_NOT_ENOUGH_GOLD
+            "Pas assez de PHGold !",                // MSG_NOT_ENOUGH_GOLD
+            "Vendre des items",                 // MSG_SELL_ITEMS
+            "Item vendu"                       // MSG_ITEM_SOLD
         }
     };
 
     if (language != GAME_LANG_ENGLISH && language != GAME_LANG_FRENCH) {
         return "Invalid language";
     }
-    if (message_id < 0 || message_id >= 111) {
+    if (message_id < 0 || message_id >= 110) {
         return "Invalid message ID";
     }
 
