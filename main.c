@@ -19,6 +19,7 @@
 #include "utils.h"
 #include "inventory.h"
 #include "item.h"
+#include "shop.h"
 
 int main() {
     // Configure console locale and encoding
@@ -67,15 +68,8 @@ int main() {
                 printf("LOL, adventure not implemented yet!\n");
                 break;
             case 2:
-            if (db->count > 0) {
-                int random_index = get_random_int(0, db->count - 1);
-                Item* random_item = db->items[random_index];
-                printf("\n=== %s ===\n", get_message(MSG_SHOP, settings.language));
-                print_item(random_item, settings.language);
-            } else {
-                printf("No items available in the shop.\n");
-            }
-            break;
+                display_shop(inv, db, settings.language);
+                break;
             case 3:
                 display_inventory(inv, settings.language);
                 break;

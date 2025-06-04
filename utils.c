@@ -28,7 +28,7 @@ void display_banner(void) {
 
 // Placeholder for translations
 const char* get_message(int message_id, int language) {
-    static const char* messages[2][110] = {
+    static const char* messages[2][111] = {
         // English
         {
             "=== Inventory Management System ===", // MSG_MENU_TITLE - 1
@@ -140,7 +140,8 @@ const char* get_message(int message_id, int language) {
             "Enter resistances (French)",      // MSG_ENTER_RESISTANCES_FR
             "Enter effect (French)",           // MSG_ENTER_EFFECT_FR
             "Enter story (French)",            // MSG_ENTER_STORY_FR
-            "Enter harvest location (French)"  // MSG_ENTER_HARVEST_LOCATION_FR - 110
+            "Enter harvest location (French)",  // MSG_ENTER_HARVEST_LOCATION_FR - 110
+            "Not enough PHGold!"              // MSG_NOT_ENOUGH_GOLD
         },
         // French
         {
@@ -253,14 +254,15 @@ const char* get_message(int message_id, int language) {
             "Entrez les résistances (Français)", // MSG_ENTER_RESISTANCES_FR
             "Entrez l'effet (Français)",       // MSG_ENTER_EFFECT_FR
             "Entrez l'histoire (Français)",    // MSG_ENTER_STORY_FR
-            "Entrez le lieu de récolte (Français)" // MSG_ENTER_HARVEST_LOCATION_FR
+            "Entrez le lieu de récolte (Français)", // MSG_ENTER_HARVEST_LOCATION_FR
+            "Pas assez de PHGold !"                // MSG_NOT_ENOUGH_GOLD
         }
     };
 
     if (language != GAME_LANG_ENGLISH && language != GAME_LANG_FRENCH) {
         return "Invalid language";
     }
-    if (message_id < 0 || message_id >= 110) {
+    if (message_id < 0 || message_id >= 111) {
         return "Invalid message ID";
     }
 

@@ -1,8 +1,8 @@
-phgold: 100
+phgold: 48
 max_weight: 50.00
 ITEM
+name_en: Rusty Hatchet
+ITEM
+name_en: Rusty Dagger
+ITEM
 name_en: Short Sword
-ITEM
-name_en: Rusty Dagger
-ITEM
-name_en: Rusty Dagger
