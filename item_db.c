@@ -379,6 +379,7 @@ void free_item_database(ItemDatabase* db) {
     if (!db) return;
     for (int i = 0; i < db->count; i++) {
         free_item(db->items[i]);
+        db->items[i] = NULL; // Set to NULL after freeing to avoid dangling pointers
     }
     free(db->items);
     free(db);

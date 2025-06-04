@@ -58,6 +58,7 @@ void free_inventory(Inventory* inv) {
     while (current) {
         InventoryNode* next = current->next;
         free_item(current->item);
+        current->item = NULL; // Avoid dangling pointer
         free(current);
         current = next;
     }

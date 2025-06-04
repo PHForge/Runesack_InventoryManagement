@@ -82,14 +82,13 @@ int main() {
                 break;
             case 6:
                 save_inventory(inv, "inventory.txt");
-                //save_items(db, "items.txt");
                 printf("%s\n", get_message(MSG_QUIT, settings.language));
                 break;
             default:
                 printf("%s\n", get_message(MSG_INVALID_CHOICE, settings.language));
         }
     } while (choice != 6);
-
+    
     free_inventory(inv);
     free_item_database(db);
     return 0;

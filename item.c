@@ -97,6 +97,7 @@ Item* create_item(
 void free_item(Item* item) {
     if (item) {
         free(item);
+        item = NULL; // Set to NULL to avoid dangling pointer
     }
 }
 

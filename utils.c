@@ -350,7 +350,7 @@ void configure_settings(GameSettings* settings, Inventory* inv, ItemDatabase* db
             case 2: {
                 Item* new_item = create_item_from_menu(settings->language, db);
                 if (new_item) {
-                    add_item(inv, new_item, settings->language);
+                    //add_item(inv, new_item, settings->language);
                     printf("\n/!\\ %s%s /!\\\n", get_message(MSG_ITEM_CREATED, settings->language),
                            settings->language == GAME_LANG_ENGLISH ? new_item->name_en : new_item->name_fr);
                 } else {
