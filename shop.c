@@ -105,6 +105,47 @@ void buy_items(Inventory* inv, ItemDatabase* db, int language) {
     }
 }
 
+// Displays the shop menu and allows the player to buy or sell items
+void display_shop(Inventory* inv, ItemDatabase* db, int language) {
+    int keep_running = 1; // Flag to control the loop for the shop menu
+    const int menu_options[] = {MSG_SHOP, MSG_SELL_ITEMS, MSG_BACK};
+    const int num_options = 3;
+
+    
+    while (keep_running) {
+        printf("\n=== %s ===\n", get_message(MSG_SHOP, language));
+        printf("%s: %d PHGold\n\n", get_message(MSG_WALLET, language), inv->phgold);
+
+        // Display the menu options
+        for (int i = 0; i < num_options; i++) {
+            printf("%d. %s\n", i + 1, get_message(menu_options[i], language));
+        }
+        printf("\n%s: ", get_message(MSG_YOUR_CHOICE, language));
+
+        // Get user input for menu selection
+        int choice;
+        if (scanf("%d", &choice) != 1 || choice < 1 || choice > num_options) {
+            clear_input_buffer();
+            printf("%s\n", get_message(MSG_INVALID_CHOICE, language));
+            continue;
+        }
+        clear_input_buffer();
+
+        switch (choice) {
+            case 1: // Buy items
+                buy_items(inv, db, language);
+                break;
+            case 2: // Sell items
+                sell_items(inv, language);
+                break;
+            case 3: // Go back to the main menu
+                printf("%s\n", get_message(MSG_BACK, language));
+                keep_running = 0;
+                break;
+        }
+    }
+}
+
 // Manages the sale of items from the inventory
 void sell_items(Inventory* inv, int language) {
     if (!inv || !inv->head) { // Check if the inventory is valid and not empty
@@ -182,43 +223,3 @@ void sell_items(Inventory* inv, int language) {
     }
 }
 
-// Displays the shop menu and allows the player to buy or sell items
-void display_shop(Inventory* inv, ItemDatabase* db, int language) {
-    int keep_running = 1; // Flag to control the loop for the shop menu
-    const int menu_options[] = {MSG_SHOP, MSG_SELL_ITEMS, MSG_BACK};
-    const int num_options = 3;
-
-    
-    while (keep_running) {
-        printf("\n=== %s ===\n", get_message(MSG_SHOP, language));
-        printf("%s: %d PHGold\n\n", get_message(MSG_WALLET, language), inv->phgold);
-
-        // Display the menu options
-        for (int i = 0; i < num_options; i++) {
-            printf("%d. %s\n", i + 1, get_message(menu_options[i], language));
-        }
-        printf("\n%s: ", get_message(MSG_YOUR_CHOICE, language));
-
-        // Get user input for menu selection
-        int choice;
-        if (scanf("%d", &choice) != 1 || choice < 1 || choice > num_options) {
-            clear_input_buffer();
-            printf("%s\n", get_message(MSG_INVALID_CHOICE, language));
-            continue;
-        }
-        clear_input_buffer();
-
-        switch (choice) {
-            case 1: // Buy items
-                buy_items(inv, db, language);
-                break;
-            case 2: // Sell items
-                sell_items(inv, language);
-                break;
-            case 3: // Go back to the main menu
-                printf("%s\n", get_message(MSG_BACK, language));
-                keep_running = 0;
-                break;
-        }
-    }
-}

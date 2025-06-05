@@ -112,12 +112,11 @@ typedef struct {
     int capacity; // Maximum capacity of the items array
 } ItemDatabase;
 
-ItemDatabase* load_items(const char* filename, int language);
-void save_items(ItemDatabase* db, const char* filename);
-void free_item_database(ItemDatabase* db);
 ItemDatabase* create_item_database(int capacity);
 void add_item_to_database(ItemDatabase* db, Item* item);
+ItemDatabase* load_items(const char* filename, int language);
 void save_single_item(Item* item, const char* filename);
+void free_item_database(ItemDatabase* db);
 
 
 #endif
