@@ -3,14 +3,16 @@
 #include "item.h"
 #include "inventory.h"
 
+// Game language definitions
 #define GAME_LANG_ENGLISH 0
 #define GAME_LANG_FRENCH 1
 
 typedef struct {
     int language; // 0: English, 1: French
-    float max_weight;
+    float max_weight; // Maximum weight the inventory can hold
 } GameSettings;
 
+// Message IDs for localization
 enum {
     MSG_MENU_TITLE, MSG_ADVENTURE, MSG_SHOP, MSG_BROWSE,
     MSG_SETTINGS, MSG_ACTUAL_SETTINGS, MSG_CREDITS, MSG_QUIT,

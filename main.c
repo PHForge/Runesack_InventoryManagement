@@ -30,6 +30,8 @@ int main() {
         SetConsoleCP(CP_UTF8);      // Configure input for UTF-8
     #endif
 
+    // Seed the random number generator
+    // This is important for generating random numbers in adventures and item selection
     srand(time(NULL));
     // Initialize game settings and load items and inventory
     GameSettings settings = {GAME_LANG_ENGLISH, 50.0f};
@@ -52,7 +54,7 @@ int main() {
 
     int choice;
     do {
-        // Display the main menu
+        // Display the main menu and the amount of the user wallet
         printf("\n%s         %s: %d PHGold\n\n", get_message(MSG_MENU_TITLE, settings.language), get_message(MSG_WALLET, settings.language), inv->phgold);
         printf("1. %s\n2. %s\n3. %s\n4. %s\n5. %s\n6. %s\n\n",
                get_message(MSG_ADVENTURE, settings.language),
@@ -89,7 +91,7 @@ int main() {
             case 5:
                 // Display credits
                 display_credits(settings.language);
-                getchar();
+                getchar(); 
                 break;
             case 6:
                 // Quit the game and save the inventory
@@ -101,7 +103,7 @@ int main() {
         }
     } while (choice != 6);
     
-    free_inventory(inv);
-    free_item_database(db);
+    free_inventory(inv); // Free the inventory resources
+    free_item_database(db); // Free the item database resources
     return 0;
 }

@@ -5,12 +5,13 @@
 #include "utils.h"
 
 // Creates a new item
+// This function allocates memory for a new item and initializes its fields based on the provided parameters.
 Item* create_item(
-    const char* name_en, const char* name_fr, int type, int rarity, int state,
+    const char* name_en, const char* name_fr, int type, int rarity, int state, 
     const char* description_en, const char* description_fr, float weight, int value,
     const char* passive_effect_en, const char* passive_effect_fr, void* specific_data
 ) {
-    // Parameter validation
+    // Ensure all required fields are provided and valid
     if (!name_en || !name_fr || !description_en || !description_fr ||
         !passive_effect_en || !passive_effect_fr || !specific_data ||
         type < TYPE_WEAPON || type > TYPE_MATERIAL ||
@@ -20,6 +21,7 @@ Item* create_item(
         return NULL;
     }
 
+    // Allocate memory for the new item
     Item* new_item = (Item*)malloc(sizeof(Item));
     if (!new_item) {
         return NULL;
@@ -45,6 +47,7 @@ Item* create_item(
     new_item->passive_effect_fr[sizeof(new_item->passive_effect_fr) - 1] = '\0';
 
     // Initialize specific fields
+    // Depending on the type, copy the specific data into the item
     switch (type) {
         case TYPE_WEAPON: {
             Weapon* weapon = (Weapon*)specific_data;
@@ -85,12 +88,12 @@ Item* create_item(
             new_item->specific.material = *material;
             break;
         }
-        default:
+        default: 
             free(new_item);
-            return NULL;
+            return NULL; 
     }
 
-    return new_item;
+    return new_item; // Return the newly created item
 }
 
 // Function to release an object
@@ -101,12 +104,14 @@ void free_item(Item* item) {
     }
 }
 
+// Prints the details of an item
+// This function displays the item's properties in a human-readable format.
 void print_item(const Item* item, int language) {
     if (!item) {
         printf("%s\n", get_message(MSG_FAILED_TO_CREATE_ITEM, language));
         return;
     }
-
+    // Print item details based on the selected language
     printf("%s: %s\n", get_message(MSG_ITEM_NAME, language),
            language == GAME_LANG_ENGLISH ? item->name_en : item->name_fr);
     printf("%s: ", get_message(MSG_ITEM_TYPE, language));
@@ -140,7 +145,7 @@ void print_item(const Item* item, int language) {
     printf("%s: %d PHGold\n", get_message(MSG_ITEM_VALUE, language), item->value);
     printf("%s: %s\n", get_message(MSG_ITEM_PASSIVE_EFFECT, language),
            language == GAME_LANG_ENGLISH ? item->passive_effect_en : item->passive_effect_fr);
-
+    // Print specific properties based on the item type
     switch (item->properties.type) {
         case TYPE_WEAPON:
             printf("%s: %d\n", get_message(MSG_ITEM_MIN_DAMAGE, language), item->specific.weapon.min_damage);

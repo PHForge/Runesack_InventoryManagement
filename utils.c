@@ -6,11 +6,13 @@
 
 
 // Returns a random integer
+// Used for generating random item selections and adventure scenarios
 int get_random_int(int min, int max) {
     return min + (rand() % (max - min + 1));
 }
 
 // Clears input buffer
+// This function is used to clear the input buffer after reading user input
 void clear_input_buffer(void) {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
@@ -28,7 +30,7 @@ void display_banner(void) {
 
 // Placeholder for translations
 const char* get_message(int message_id, int language) {
-    static const char* messages[2][114] = {
+    static const char* messages[2][114] = { // Array of messages for different languages
         // English
         {
             "=== Inventory Management System ===", // MSG_MENU_TITLE - 1
@@ -128,23 +130,23 @@ const char* get_message(int message_id, int language) {
             "Hands",                           // MSG_HANDS
             "Off-hand",                        // MSG_OFFHAND
             "Inventory full! Item discarded.",  // MSG_INVENTORY_FULL
-            "Total Weight",                    // MSG_ACTUAL_BAG_WEIGHT
-            "Wallet",                          // MSG_WALLET
-            "Enter item name (French)",        // MSG_ENTER_NAME_FR - 100
-            "Enter item description (French)", // MSG_ENTER_DESCRIPTION_FR
-            "Enter passive effect (French)",   // MSG_ENTER_PASSIVE_EFFECT_FR
-            "Enter damage type (French)",      // MSG_ENTER_DAMAGE_TYPE_FR
-            "Enter resistances (French)",      // MSG_ENTER_RESISTANCES_FR
-            "Enter effect (French)",           // MSG_ENTER_EFFECT_FR
-            "Enter story (French)",            // MSG_ENTER_STORY_FR
+            "Total Weight",                     // MSG_ACTUAL_BAG_WEIGHT
+            "Wallet",                           // MSG_WALLET
+            "Enter item name (French)",         // MSG_ENTER_NAME_FR - 100
+            "Enter item description (French)",  // MSG_ENTER_DESCRIPTION_FR
+            "Enter passive effect (French)",    // MSG_ENTER_PASSIVE_EFFECT_FR
+            "Enter damage type (French)",       // MSG_ENTER_DAMAGE_TYPE_FR
+            "Enter resistances (French)",       // MSG_ENTER_RESISTANCES_FR
+            "Enter effect (French)",            // MSG_ENTER_EFFECT_FR
+            "Enter story (French)",             // MSG_ENTER_STORY_FR
             "Enter harvest location (French)",  // MSG_ENTER_HARVEST_LOCATION_FR
-            "Not enough PHGold!",              // MSG_NOT_ENOUGH_GOLD
+            "Not enough PHGold!",               // MSG_NOT_ENOUGH_GOLD
             "Sell items",                       // MSG_SELL_ITEMS
             "Item sold",                        // MSG_ITEM_SOLD - 110
             "Congratulations, you succeeded in your mission!", // MSG_ADVENTURE_SUCCESS
-            "You earned",                      // MSG_REWARD_GOLD
-            "You found",                       // MSG_REWARD_ITEM
-            "Item too heavy, abandoned in the wild" // MSG_ITEM_ABANDONED
+            "You earned",                                      // MSG_REWARD_GOLD
+            "You found",                                       // MSG_REWARD_ITEM
+            "Item too heavy, abandoned in the wild"            // MSG_ITEM_ABANDONED
             
         },
         // French
@@ -247,7 +249,7 @@ const char* get_message(int message_id, int language) {
             "Main secondaire",                        // MSG_OFFHAND
             "Inventaire plein ! Objet rejeté.",       // MSG_INVENTORY_FULL
             "Poids total",                            // MSG_ACTUAL_BAG_WEIGHT
-            "Portefeuille",                            // MSG_WALLET
+            "Portefeuille",                           // MSG_WALLET
             "Entrez le nom de l'objet (Français)",          // MSG_ENTER_NAME_FR
             "Entrez la description de l'objet (Français)",  // MSG_ENTER_DESCRIPTION_FR
             "Entrez l'effet passif (Français)",             // MSG_ENTER_PASSIVE_EFFECT_FR
@@ -266,6 +268,7 @@ const char* get_message(int message_id, int language) {
         }
     };
 
+    // Validate language and message_id
     if (language != GAME_LANG_ENGLISH && language != GAME_LANG_FRENCH) {
         return "Invalid language";
     }
@@ -276,7 +279,7 @@ const char* get_message(int message_id, int language) {
     return messages[language][message_id];
 }
 
-// Displays credits
+// Displays credits - displays a dedication message to my family and prompts the user to continue.
 void display_credits(int language) {
     static const char* credits[2] = {
         "Dedicated to my beloved wife and son, whose patience and love inspire me every day.\n\n-- Press any key to continue... --\n",
@@ -290,41 +293,45 @@ void display_credits(int language) {
 static int get_menu_choice(int prompt_id, const int options[], int num_options, int language) {
     int choice;
     printf("\n%s:\n\n", get_message(prompt_id, language));
-    for (int i = 0; i < num_options; i++) {
+    for (int i = 0; i < num_options; i++) { // Display each option
         printf("%d. %s\n", i + 1, get_message(options[i], language));
     }
+    // Prompt the user for a choice
     while (1) {
-        printf("\n%s: ", get_message(MSG_YOUR_CHOICE, language)); // Prompt neutre
+        printf("\n%s: ", get_message(MSG_YOUR_CHOICE, language));
         if (scanf("%d", &choice) != 1) {
             clear_input_buffer();
             printf("%s (1-%d)\n", get_message(MSG_INVALID_CHOICE, language), num_options);
             continue;
         }
         clear_input_buffer();
-        if (choice >= 1 && choice <= num_options) {
+        if (choice >= 1 && choice <= num_options) { // Validate the choice
             break;
         }
         printf("%s (1-%d)\n", get_message(MSG_INVALID_CHOICE, language), num_options);
     }
-    return choice - 1; // Retourner l'indice (0-based)
+    return choice - 1; // Return zero-based index
 }
 
-// Fonction pour configurer les paramètres
+// Configures game settings
+// This function allows the user to change language, max weight, and add items to the game
 void configure_settings(GameSettings* settings, Inventory* inv, ItemDatabase* db) {
     if (!settings || !inv || !db) {
         printf("Error: Invalid settings, inventory, or database pointer.\n");
         return;
     }
 
-    int keep_running = 1;
+    int keep_running = 1; // Flag to control the loop for the settings menu
+    // Define menu options
     const int menu_options[] = {
         MSG_CHANGE_LANGUAGE,
         MSG_CHANGE_MAX_WEIGHT,
         MSG_ADD_ITEM,
         MSG_BACK
     };
-    const int num_options = 4;
+    const int num_options = 4; 
 
+    // Display the settings menu
     while (keep_running) {
         printf("\n=== %s ===\n\n", get_message(MSG_SETTINGS, settings->language));
         printf("%s: %s\n", get_message(MSG_ACTUAL_SETTINGS, settings->language),
@@ -334,7 +341,9 @@ void configure_settings(GameSettings* settings, Inventory* inv, ItemDatabase* db
 
         int choice = get_menu_choice(MSG_SELECT_OPTION, menu_options, num_options, settings->language);
 
+        // Handle the user's choice
         switch (choice) {
+            // Change language
             case 0: {
                 const int lang_options[] = {MSG_ENGLISH, MSG_FRENCH};
                 int lang_choice = get_menu_choice(MSG_SELECT_LANGUAGE, lang_options, 2, settings->language);
@@ -342,6 +351,7 @@ void configure_settings(GameSettings* settings, Inventory* inv, ItemDatabase* db
                 printf("\n/!\\ %s /!\\\n", get_message(MSG_LANGUAGE_UPDATED, settings->language));
                 break;
             }
+            // Change max weight
             case 1: {
                 printf("\n%s: ", get_message(MSG_CHANGE_MAX_WEIGHT, settings->language));
                 float new_weight;
@@ -356,10 +366,10 @@ void configure_settings(GameSettings* settings, Inventory* inv, ItemDatabase* db
                 }
                 break;
             }
+            // Add item to the game
             case 2: {
-                Item* new_item = create_item_from_menu(settings->language, db);
-                if (new_item) {
-                    //add_item(inv, new_item, settings->language);
+                Item* new_item = create_item_from_menu(settings->language, db); // Create a new item via the menu
+                if (new_item) { // If item creation was successful
                     printf("\n/!\\ %s%s /!\\\n", get_message(MSG_ITEM_CREATED, settings->language),
                            settings->language == GAME_LANG_ENGLISH ? new_item->name_en : new_item->name_fr);
                 } else {
@@ -367,6 +377,7 @@ void configure_settings(GameSettings* settings, Inventory* inv, ItemDatabase* db
                 }
                 break;
             }
+            // Go back to the previous menu
             case 3: {
                 printf("\n%s\n", get_message(MSG_BACK, settings->language));
                 keep_running = 0;
@@ -376,7 +387,7 @@ void configure_settings(GameSettings* settings, Inventory* inv, ItemDatabase* db
     }
 }
 
-// Fonction pour créer un objet via un menu interactif
+// Creates an item from user input via a menu
 Item* create_item_from_menu(int language, ItemDatabase* db) {
     char name_en[50], name_fr[50], description_en[100], description_fr[100], passive_effect_en[50], passive_effect_fr[50];
     float weight;
@@ -390,14 +401,14 @@ Item* create_item_from_menu(int language, ItemDatabase* db) {
 
     printf("\n=== %s ===\n", get_message(MSG_ADD_ITEM, language));
     printf("\n%s: ", get_message(MSG_ENTER_ITEM_NAME, language));
-    while (1) {
+    while (1) { // Loop until a valid EN name is entered
         fgets(name_en, sizeof(name_en), stdin);
         name_en[strcspn(name_en, "\n")] = '\0';
         if (strlen(name_en) > 0) break;
         printf("%s: ", get_message(MSG_ENTER_ITEM_NAME, language));
     }
     printf("%s: ", get_message(MSG_ENTER_NAME_FR, language));
-    while (1) {
+    while (1) { // Loop until a valid FR name is entered
         fgets(name_fr, sizeof(name_fr), stdin);
         name_fr[strcspn(name_fr, "\n")] = '\0';
         if (strlen(name_fr) > 0) break;
@@ -434,8 +445,8 @@ Item* create_item_from_menu(int language, ItemDatabase* db) {
     fgets(passive_effect_fr, sizeof(passive_effect_fr), stdin);
     passive_effect_fr[strcspn(passive_effect_fr, "\n")] = '\0';
 
-    void* specific_data = NULL;
-    switch (type) {
+    void* specific_data = NULL; // Pointer to hold specific item data based on type
+    switch (type) { // Determine the type of item and gather specific data
         case TYPE_WEAPON: {
             Weapon weapon = {0};
             printf("%s: ", get_message(MSG_ENTER_MIN_DAMAGE, language));
@@ -535,12 +546,14 @@ Item* create_item_from_menu(int language, ItemDatabase* db) {
         }
     }
 
+    // Create the item with the gathered data
     Item* item = create_item(name_en, name_fr, type, rarity, state, description_en, description_fr,
                              weight, value, passive_effect_en, passive_effect_fr, specific_data);
-    if (specific_data) free(specific_data);
+    if (specific_data) free(specific_data); // Free specific data if it was allocated
+    // If item creation was successful, add it to the database and save it in items.txt
     if (item && db) {
         add_item_to_database(db, item);
-        save_single_item(item, "items.txt"); // Sauvegarder l'item dans items.txt
+        save_single_item(item, "items.txt");
     }
     return item;
 }
