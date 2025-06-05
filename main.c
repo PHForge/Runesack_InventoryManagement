@@ -20,6 +20,7 @@
 #include "inventory.h"
 #include "item.h"
 #include "shop.h"
+#include "adventure.h"
 
 int main() {
     // Configure console locale and encoding
@@ -30,23 +31,28 @@ int main() {
     #endif
 
     srand(time(NULL));
+    // Initialize game settings and load items and inventory
     GameSettings settings = {GAME_LANG_ENGLISH, 50.0f};
+    // Load game settings from a file or use default values
     ItemDatabase* db = load_items("items.txt", settings.language);
     if (!db) {
         printf("Failed to load items database.\n");
         return 1;
     }
+    // Initialize inventory with the maximum weight from settings
     Inventory* inv = create_inventory(settings.max_weight);
     if (!inv) {
         free_item_database(db);
         printf("Error: Failed to initialize inventory.\n");
         return 1;
     }
+    // Load inventory from a file or initialize with default values
     load_inventory(inv, "inventory.txt", db, settings.language);
     display_banner();
 
     int choice;
     do {
+        // Display the main menu
         printf("\n%s         %s: %d PHGold\n\n", get_message(MSG_MENU_TITLE, settings.language), get_message(MSG_WALLET, settings.language), inv->phgold);
         printf("1. %s\n2. %s\n3. %s\n4. %s\n5. %s\n6. %s\n\n",
                get_message(MSG_ADVENTURE, settings.language),
@@ -65,22 +71,28 @@ int main() {
 
         switch (choice) {
             case 1:
-                printf("LOL, adventure not implemented yet!\n");
+                // Go on an adventure
+                go_on_adventure(inv, db, settings.language);
                 break;
             case 2:
+                // Visit the shop
                 display_shop(inv, db, settings.language);
                 break;
             case 3:
+                // Browse the inventory
                 display_inventory(inv, settings.language);
                 break;
             case 4:
+                // Configure settings
                 configure_settings(&settings, inv, db);
                 break;
             case 5:
+                // Display credits
                 display_credits(settings.language);
                 getchar();
                 break;
             case 6:
+                // Quit the game and save the inventory
                 save_inventory(inv, "inventory.txt");
                 printf("%s\n", get_message(MSG_QUIT, settings.language));
                 break;
