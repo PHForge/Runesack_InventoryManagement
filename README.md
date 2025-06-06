@@ -35,7 +35,7 @@ The following components are required to build, run, or contribute to this proje
 |--------------------|------------------------------------------|--------------------------------------------|
 | Language | C                                      | Core language used for the project         |
 | Compiler       | GCC                                      | Ensure GCC is installed (e.g., MinGW for Windows) |
-| Libraries      | Standard C Libraries (stdio.h, stdlib.h, time.h, locale.h, windows.h) | Included with standard C installations      |
+| Libraries      | Standard C Libraries (stdio.h, string.h, stdlib.h, time.h, locale.h, windows.h) | Included with standard C installations      |
 | IDE/Editor     | VS Code or any C-compatible IDE/terminal | Other IDEs like Code::Block or CLion can be used |
 | Version Control | Git                                     | Required to clone the repository           |
 
@@ -77,17 +77,17 @@ Runesack_InventoryManagementSystem/
 ├── adventure.h		# Header for adventure functions
 ├── inventory.c		# Inventory management
 ├── inventory.h		# Header for inventory functions
-├── item.c			# Item creation and printing
-├── item.h			# Header for item & item_db functions
+├── item.c		# Item creation and printing
+├── item.h		# Header for item & item_db functions
 ├── item_db.c		# Item database management
-├── main.c			# Main game loop and menu
-├── shop.c			# Shop system for buying/selling
-├── shop.h			# Header for shop functions
-├── utils.c			# Utility functions (random, localization)
-├── utils.h			# Header for utility functions
+├── main.c		# Main game loop and menu
+├── shop.c		# Shop system for buying/selling
+├── shop.h		# Header for shop functions
+├── utils.c		# Utility functions (random, localization)
+├── utils.h		# Header for utility functions
 ├── inventory.txt	# Persistent inventory storage
 ├── items.txt		# Persistent item database
-├── LICENSE			# MIT License
+├── LICENSE		# MIT License
 ├── .gitignore		# Ignore compiled files
 └── README.md		# This file
 ```
